@@ -22,15 +22,16 @@ This project was developed as part of the GramIQ Internship Technical Assignment
 ## Screenshots
 
 ### Homepage – Dark Mode
-![Dark Mode Screenshot](./screenshots/dark-mode.png)
+<img width="2203" height="706" alt="image" src="https://github.com/user-attachments/assets/088eea13-07ef-4731-b80e-935ca8afe018" />
+
 
 ### Weather Data Display
-![Weather Data Screenshot](./screenshots/weather-data.png)
+<img width="1638" height="647" alt="image" src="https://github.com/user-attachments/assets/c21cc1d3-4ffa-4f09-8ea5-d561151d72e6" />
 
 ### Weather Trend Chart
-![Chart Screenshot](./screenshots/chart.png)
+<img width="1560" height="887" alt="image" src="https://github.com/user-attachments/assets/93ee0a46-2c8b-4670-8043-57bf3320d852" />
 
-> Create a folder named `screenshots` in your repo and add images with these names.
+
 
 ---
 

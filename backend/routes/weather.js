@@ -1,5 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
+import { generateAdvisories } from "../utils/advisory.js";
+import { Search } from "../models/Search.js";
 
 const router = express.Router();
 
@@ -12,19 +14,16 @@ router.get("/", async (req, res) => {
     }
 
     const apiKey = process.env.OPENWEATHER_API_KEY;
-
     const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
-
     const response = await fetch(url);
 
-    if(!response.ok){
-  const errorText = await response.text();
-  return res.status(response.status).json({
-    error: "OpenWeatherMap error",
-    details: errorText
-  });
-}
-
+    if (!response.ok) {
+      const errorText = await response.text();
+      return res.status(response.status).json({
+        error: "OpenWeatherMap error",
+        details: errorText
+      });
+    }
 
     const data = await response.json();
     const block = data.list[0];
@@ -41,6 +40,17 @@ router.get("/", async (req, res) => {
       wind: Math.round(item.wind.speed * 3.6),
     }));
 
+    const advisories = generateAdvisories({
+      temperature,
+      humidity,
+      windKmh,
+      pop,
+      forecast
+    });
+
+    await Search.create({ city });
+    const lastFive = await Search.find().sort({ searchedAt: -1 }).limit(5);
+
     res.json({
       location: `${data.city.name}, ${data.city.country}`,
       temperature,
@@ -48,10 +58,12 @@ router.get("/", async (req, res) => {
       windKmh,
       pop,
       forecast,
+      advisories,
+      recentSearches: lastFive
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("Server error:", err);
     res.status(500).json({ error: "Server error", details: err.message });
   }
 });
